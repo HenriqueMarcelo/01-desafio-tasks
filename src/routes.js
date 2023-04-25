@@ -70,5 +70,21 @@ export const routes = [
 
             return res.writeHead(204).end()
         }
-    }
+    },
+    {
+        method: 'PATCH',
+        path: buildRoutePath('/tasks/:id/complete'),
+        handler: (req, res) => {
+            const {id} = req.params
+
+            const task = database.find('tasks', id)
+
+            database.update('tasks', id, {
+                ...task,
+                completed_at: new Date().toJSON(),
+            })
+
+            return res.writeHead(204).end()
+        }
+    },
 ]
