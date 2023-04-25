@@ -62,4 +62,9 @@ export class Database {
             this.#persist()
         }
     }
+
+    find(table, id) {
+        const row = this.#database[table].find(row => row.id === id)
+        return row
+    }
 }

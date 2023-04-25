@@ -26,9 +26,12 @@ export const routes = [
             const {title, description} = req.body
 
             const task = {
+                id: randomUUID(),
                 title,
                 description,
-                id: randomUUID(),
+                completed_at: null,
+                created_at: new Date().toJSON(),
+                updated_at: new Date().toJSON(),
             }
 
             database.insert('tasks', task)
@@ -36,7 +39,7 @@ export const routes = [
             return res
                 .writeHead(201)
                 .end()
-            }
+        }
     },
     {
         method: 'DELETE',
@@ -56,10 +59,14 @@ export const routes = [
             const {id} = req.params
             const {title, description} = req.body
 
+            const task = database.find('tasks', id)
+            
             database.update('tasks', id, {
+                ...task,
                 title, 
-                description} 
-            )
+                description,
+                updated_at: new Date().toJSON(),
+            })
 
             return res.writeHead(204).end()
         }
