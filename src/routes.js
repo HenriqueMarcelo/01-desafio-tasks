@@ -12,8 +12,8 @@ export const routes = [
             const { search }  = req.query
 
             const tasks = database.select('tasks', search ? {
-                name: search,
-                email: search
+                title: search,
+                description: search
             } : null)
             return res
                 .end(JSON.stringify(tasks))
@@ -23,11 +23,11 @@ export const routes = [
         method: 'POST',
         path: buildRoutePath('/tasks'),
         handler: (req, res) => {
-            const {name, email} = req.body
+            const {title, description} = req.body
 
             const task = {
-                name,
-                email,
+                title,
+                description,
                 id: randomUUID(),
             }
 
@@ -54,11 +54,11 @@ export const routes = [
         path: buildRoutePath('/tasks/:id'),
         handler: (req, res) => {
             const {id} = req.params
-            const {name, email} = req.body
+            const {title, description} = req.body
 
             database.update('tasks', id, {
-                name, 
-                email} 
+                title, 
+                description} 
             )
 
             return res.writeHead(204).end()
