@@ -34,11 +34,11 @@ export const routes = [
                 updated_at: new Date().toJSON(),
             }
 
-            database.insert('tasks', task)
+            const newTask = database.insert('tasks', task)
 
             return res
                 .writeHead(201)
-                .end()
+                .end(JSON.stringify(newTask))
         }
     },
     {
@@ -60,7 +60,7 @@ export const routes = [
             const {title, description} = req.body
 
             const task = database.find('tasks', id)
-            
+
             database.update('tasks', id, {
                 ...task,
                 title, 
