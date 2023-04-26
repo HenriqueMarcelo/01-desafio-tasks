@@ -23,22 +23,30 @@ export const routes = [
         method: 'POST',
         path: buildRoutePath('/tasks'),
         handler: (req, res) => {
-            const {title, description} = req.body
+            try {
+                const {title, description} = req.body
+    
+                const task = {
+                    id: randomUUID(),
+                    title,
+                    description,
+                    completed_at: null,
+                    created_at: new Date().toJSON(),
+                    updated_at: new Date().toJSON(),
+                }
+    
+                const newTask = database.insert('tasks', task)
+    
+                return res
+                    .writeHead(201)
+                    .end(JSON.stringify(newTask))
 
-            const task = {
-                id: randomUUID(),
-                title,
-                description,
-                completed_at: null,
-                created_at: new Date().toJSON(),
-                updated_at: new Date().toJSON(),
+            } catch (e) {
+                console.log(e)
+                return res
+                    .writeHead(400)
+                    .end('Erro genérico')
             }
-
-            const newTask = database.insert('tasks', task)
-
-            return res
-                .writeHead(201)
-                .end(JSON.stringify(newTask))
         }
     },
     {
